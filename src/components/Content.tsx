@@ -9,6 +9,8 @@ interface Props {
 class Content extends React.Component<Props, Record<string, never>> {
   render() {
     const { arts, isLoading } = this.props;
+    console.log('пришло в пропсах в компонент', arts);
+
     return (
       <>
         {isLoading ? (

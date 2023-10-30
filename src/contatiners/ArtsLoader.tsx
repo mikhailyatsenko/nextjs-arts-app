@@ -19,13 +19,18 @@ interface State {
 }
 
 class ArtsLoader extends React.Component<Record<string, never>, State> {
-  state = {
-    isLoading: true,
-    query: localStorage.getItem('query')! ? localStorage.getItem('query')! : '',
-    arts: [],
-    currentPage: 1,
-    totalPages: 1,
-  };
+  constructor(props: Record<string, never>) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      query: localStorage.getItem('query')!
+        ? localStorage.getItem('query')!
+        : '',
+      arts: [{ artist_display: '', title: 'string', image_id: 'string' }],
+      currentPage: 1,
+      totalPages: 1,
+    };
+  }
 
   fetchArts = async () => {
     this.setState({
@@ -34,13 +39,15 @@ class ArtsLoader extends React.Component<Record<string, never>, State> {
     const url = `https://api.artic.edu/api/v1/artworks/search?q=${this.state.query}&limit=5&page=${this.state.currentPage}&fields=artist_display,title,image_id`;
     const response = await fetch(url);
     const dataArts = await response.json();
-    if (dataArts) {
+    if (dataArts.data.length) {
       this.setState({
-        arts: [...this.state.arts, ...dataArts.data],
-        isLoading: false,
+        arts: dataArts.data,
         totalPages: dataArts.pagination.total_pages,
       });
     }
+    this.setState({
+      isLoading: false,
+    });
   };
 
   searchByQuery = (searchQuery: string) => {
@@ -60,6 +67,8 @@ class ArtsLoader extends React.Component<Record<string, never>, State> {
     prevProps: Readonly<Record<string, never>>,
     prevState: Readonly<State>
   ): void {
+    console.log('didupdate');
+    console.log(prevState, this.state);
     if (
       prevState.query !== this.state.query ||
       prevState.currentPage !== this.state.currentPage
@@ -70,6 +79,7 @@ class ArtsLoader extends React.Component<Record<string, never>, State> {
 
   componentDidMount() {
     this.fetchArts();
+    console.log('didmount');
   }
 
   render() {
