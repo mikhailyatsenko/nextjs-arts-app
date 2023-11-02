@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Search from '../components/Search';
 import Content from '../components/Content';
 import Pagination from '../components/Pagination';
@@ -18,84 +18,70 @@ interface State {
   totalPages: number;
 }
 
-class ArtsLoader extends React.Component<Record<string, never>, State> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      query: localStorage.getItem('query')!
-        ? localStorage.getItem('query')!
-        : '',
-      arts: [{ artist_display: '', title: 'string', image_id: 'string' }],
-      currentPage: 1,
-      totalPages: 1,
-    };
-  }
+const ArtsLoader = () => {
+  const [state, setState] = useState<State>({
+    isLoading: true,
+    query: localStorage.getItem('query') || '',
+    arts: [{ artist_display: '', title: 'string', image_id: 'string' }],
+    currentPage: 1,
+    totalPages: 1,
+  });
 
-  fetchArts = async () => {
-    this.setState({
+  const fetchArts = async () => {
+    setState((prevState) => ({
+      ...prevState,
       isLoading: true,
-    });
-    const url = `https://api.artic.edu/api/v1/artworks/search?q=${this.state.query}&limit=5&page=${this.state.currentPage}&fields=artist_display,title,image_id`;
+    }));
+    const url = `https://api.artic.edu/api/v1/artworks/search?q=${state.query}&limit=5&page=${state.currentPage}&fields=artist_display,title,image_id`;
     const response = await fetch(url);
     const dataArts = await response.json();
     if (dataArts.data.length) {
-      this.setState({
+      setState((prevState) => ({
+        ...prevState,
         arts: dataArts.data,
         totalPages: dataArts.pagination.total_pages,
-      });
+        isLoading: false,
+      }));
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        arts: [],
+        isLoading: false,
+      }));
     }
-    this.setState({
-      isLoading: false,
-    });
   };
 
-  searchByQuery = (searchQuery: string) => {
-    this.setState({
+  const searchByQuery = (searchQuery: string) => {
+    setState((prevState) => ({
+      ...prevState,
       query: searchQuery,
-    });
+    }));
     localStorage.setItem('query', searchQuery);
   };
 
-  changePage = (page: number) => {
-    this.setState({
+  const changePage = (page: number) => {
+    setState((prevState) => ({
+      ...prevState,
       currentPage: page,
-    });
+    }));
   };
 
-  componentDidUpdate(
-    prevProps: Readonly<Record<string, never>>,
-    prevState: Readonly<State>
-  ): void {
-    console.log('didupdate');
-    console.log(prevState, this.state);
-    if (
-      prevState.query !== this.state.query ||
-      prevState.currentPage !== this.state.currentPage
-    ) {
-      this.fetchArts();
-    }
-  }
+  useEffect(() => {
+    fetchArts();
+  }, [state.query, state.currentPage]);
 
-  componentDidMount() {
-    this.fetchArts();
-    console.log('didmount');
-  }
-
-  render() {
-    return (
-      <>
-        <Search searchByQuery={this.searchByQuery} query={this.state.query} />
-        <Content arts={this.state.arts} isLoading={this.state.isLoading} />
-        <Pagination
-          currentPage={this.state.currentPage}
-          changePage={this.changePage}
-          totalPages={this.state.totalPages}
-        />
-        <MakeError />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Search searchByQuery={searchByQuery} query={state.query} />
+      <Content arts={state.arts} isLoading={state.isLoading} />
+      <Pagination
+        currentPage={state.currentPage}
+        changePage={changePage}
+        totalPages={state.totalPages}
+      />
+      <MakeError />
+    </>
+  );
+};
 
 export default ArtsLoader;

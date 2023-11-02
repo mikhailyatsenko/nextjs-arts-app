@@ -1,25 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-interface State {
-  error: boolean;
-}
+const MakeError = () => {
+  const [error, setError] = useState(false);
 
-class MakeError extends React.Component<Record<string, never>, State> {
-  throwError = () => {
-    this.setState({
-      error: true,
-    });
+  const throwError = () => {
+    setError(true);
   };
-  render() {
-    if (this.state) {
-      throw Error();
-    }
-    return (
-      <button className="error-button" onClick={this.throwError}>
-        Throw Error
-      </button>
-    );
+
+  if (error) {
+    throw new Error();
   }
-}
+
+  return (
+    <button className="error-button" onClick={throwError}>
+      Throw Error
+    </button>
+  );
+};
 
 export default MakeError;
