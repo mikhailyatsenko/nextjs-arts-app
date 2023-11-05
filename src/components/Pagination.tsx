@@ -1,8 +1,8 @@
 import React from 'react';
 
 interface Props {
-  currentPage: number;
-  changePage: (page: number) => void;
+  currentPage: string;
+  changePage: (page: string) => void;
   totalPages: number;
 }
 
@@ -11,27 +11,32 @@ const Pagination: React.FC<Props> = ({
   changePage,
   totalPages,
 }) => {
+  const currentPageNum = Number(currentPage);
   const pagesToDisplay: number[] = [];
   const maxPageLimitToDisplay = () =>
-    totalPages < 6 ? totalPages : currentPage + 6;
-  for (let i = currentPage; i < maxPageLimitToDisplay(); i++) {
+    totalPages < 6 ? totalPages : currentPageNum + 6;
+  for (let i = currentPageNum; i < maxPageLimitToDisplay(); i++) {
     pagesToDisplay.push(i);
   }
   return (
     <>
       <div className="pagination">
-        <div onClick={() => changePage(currentPage - 1)}>&laquo;</div>
+        <div onClick={() => changePage((currentPageNum - 1).toString())}>
+          &laquo;
+        </div>
 
         {pagesToDisplay.map((page, index) => (
           <div
             key={index}
-            onClick={() => changePage(page)}
-            className={page === currentPage ? 'active' : ''}
+            onClick={() => changePage(page.toString())}
+            className={page === currentPageNum ? 'active' : ''}
           >
             {page}
           </div>
         ))}
-        <div onClick={() => changePage(currentPage + 1)}>&raquo;</div>
+        <div onClick={() => changePage((currentPageNum - 1).toString())}>
+          &raquo;
+        </div>
       </div>
     </>
   );

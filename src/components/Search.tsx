@@ -16,9 +16,7 @@ const Search: React.FC<Props> = ({ searchByQuery, query }) => {
         action=""
         onSubmit={(e) => {
           e.preventDefault();
-          const searchQuery = (
-            document.getElementById('query') as HTMLInputElement
-          ).value;
+          const searchQuery = (e.currentTarget.query as HTMLInputElement).value;
           searchByQuery(searchQuery);
         }}
       >
