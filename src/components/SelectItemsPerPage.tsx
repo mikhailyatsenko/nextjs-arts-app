@@ -10,19 +10,21 @@ const SelectItemsPerPage = ({ itemsPerPage, changeItemsPerPage }: Props) => {
     itemsToDisplay.push(i);
   }
   return (
-    <select
-      defaultValue={itemsPerPage}
-      onChange={(e) => {
-        console.log(e.target.value);
-        changeItemsPerPage(e.target.value);
-      }}
-    >
-      {itemsToDisplay.map((itemNum, index) => (
-        <option key={index} value={itemNum}>
-          {itemNum}
-        </option>
-      ))}
-    </select>
+    <div className="items-per-page">
+      <p>Arts per page: </p>
+      <select
+        defaultValue={itemsPerPage}
+        onChange={(e) => {
+          changeItemsPerPage(e.target.value);
+        }}
+      >
+        {itemsToDisplay.map((itemNum, index) => (
+          <option key={index} value={itemNum}>
+            {itemNum}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 

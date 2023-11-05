@@ -1,14 +1,11 @@
-// import { useSearchParams } from 'react-router-dom';
-import './item.css';
 import { DetailArt } from '../contatiners/ArtsLoader';
 
 interface Props {
   detailArt: DetailArt;
+  closeItemArtPage: () => void;
 }
 
-const ItemArtPage = ({ detailArt }: Props) => {
-  // const [searchParams] = useSearchParams();
-
+const ItemArtPage = ({ detailArt, closeItemArtPage }: Props) => {
   return detailArt.title ? (
     <div className="art-item">
       <h2>{detailArt.artist_display}</h2>
@@ -18,10 +15,13 @@ const ItemArtPage = ({ detailArt }: Props) => {
         src={`https://www.artic.edu/iiif/2/${detailArt.image_id}/full/400,/0/default.jpg`}
         alt=""
       />
-      <p>{detailArt.provenance_text}</p>
+      <div className="details-provenance">{detailArt.provenance_text}</div>
+      <button onClick={closeItemArtPage} className="close-detais-button">
+        Close details
+      </button>
     </div>
   ) : (
-    'Loading...'
+    <span className="loader"></span>
   );
 };
 

@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 interface Props {
   arts: Arts;
   clickOnArtFromList: (index: string, id: string) => void;
+  closeItemArtPage: () => void;
   isLoading: boolean;
 }
 
@@ -13,13 +14,14 @@ const ListOfArts: React.FC<Props> = ({
   arts,
   isLoading,
   clickOnArtFromList,
+  closeItemArtPage,
 }) => {
   const [searchParams] = useSearchParams();
 
   return (
     <>
       {isLoading ? (
-        <div>Loading...</div>
+        <span className="loader"></span>
       ) : arts[0] ? (
         <div
           className={
@@ -28,6 +30,7 @@ const ListOfArts: React.FC<Props> = ({
               : 'arts-list'
           }
         >
+          <div onClick={closeItemArtPage} className="art-list-overlay"></div>
           {arts.map((art, index) => (
             <div
               onClick={() => clickOnArtFromList((index + 1).toString(), art.id)}

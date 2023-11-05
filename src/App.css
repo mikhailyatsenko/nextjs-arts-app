@@ -1,7 +1,6 @@
 #root {
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -19,8 +18,7 @@
 }
 
 img.art-img {
-  height: 280px;
-  width: auto;
+  max-width: 100%;
 }
 
 .container-arts {
@@ -29,21 +27,63 @@ img.art-img {
 }
 
 .arts-list {
+  position: relative;
   width: 100%;
-  transition: width 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .arts-list.collapsed  {
   width: 20%;
+  padding: 0 40px;
+  opacity: 0.4;
+}
+
+.arts-list.collapsed h2 {
+  font-size: 1.2em; 
+}
+
+.arts-list.collapsed h3 {
+  font-size: 1em; 
+
 }
 
 .art-item {
   width: 80%;
 }
 
+.art-item-list {
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.1s;
+  padding: 10px;
+}
+
+.art-item-list:hover {
+  transform: scale(1.02);
+  background-color: #ffffff0d;
+
+}
+
+.arts-list .art-list-overlay {
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+.arts-list.collapsed .art-list-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 
 .form-input{
   margin: 10px;
+  height: 30px;
+  font-size: 18px;
+  vertical-align: middle;
 }
 
 .card {
@@ -54,7 +94,13 @@ img.art-img {
   color: #888;
 }
 
-
+.items-per-page {
+  padding-bottom: 16px;
+}
+.items-per-page p {
+  margin: 8px;
+  font-size: 18px;
+}
 
 .pagination {
   display: inline-block;
@@ -69,7 +115,7 @@ img.art-img {
 }
 
 .pagination div.active {
-  background-color: #4caf50;
+  background-color: #646cff;
   color: white;
 }
 
@@ -90,9 +136,13 @@ img.art-img {
   display: block;
   margin: 0 auto;
 }
-.description {
+/* .description {
   padding: 10px;
   text-align: center;
+} */
+
+.details-provenance {
+  margin: 20px 80px
 }
   
 @media (prefers-reduced-motion: no-preference) {
@@ -100,3 +150,24 @@ img.art-img {
       animation: logo-spin infinite 20s linear;
     }
   }
+
+.loader {
+  width: 48px;
+  height: 48px;
+  margin: 20px;
+  border: 5px dotted #FFF;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 

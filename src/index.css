@@ -35,6 +35,9 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+h2, h3 {
+  margin: 8px;
+}
 
 button {
   border-radius: 8px;
@@ -46,9 +49,13 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  vertical-align: middle;
 }
 button:hover {
   border-color: #646cff;
+}
+button.close-detais-button:hover{
+  border-color: #a25941;
 }
 button:focus,
 button:focus-visible {

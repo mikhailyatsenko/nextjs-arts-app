@@ -67,7 +67,13 @@ const ArtsLoader = () => {
 
       setDetailArt(detailArtData.data);
     };
-    if (selectedArtId) fetchArtDetailInfo();
+    if (selectedArtId) {
+      fetchArtDetailInfo();
+      window.scrollTo({
+        top: 200,
+        behavior: 'smooth',
+      });
+    }
   }, [selectedArtId, arts]);
 
   const searchByQuery = (searchQuery: string) => {
@@ -81,15 +87,20 @@ const ArtsLoader = () => {
   };
 
   const clickOnArtFromList = (index: string, id: string) => {
+    setDetailArt({} as DetailArt);
     setSearchParams({ page: currentPage ?? 1, details: index });
     setSelectedArtId(id);
   };
 
   const changeItemsPerPage = (itemsPerPage: string) => {
     setSearchParams({});
+    setCurrentPage('1');
     setItemsPerPage(Number(itemsPerPage));
   };
 
+  const closeItemArtPage = () => {
+    setSearchParams({});
+  };
   return (
     <>
       <Search searchByQuery={searchByQuery} query={query} />
@@ -106,11 +117,20 @@ const ArtsLoader = () => {
                 arts={arts}
                 isLoading={isLoading}
                 clickOnArtFromList={clickOnArtFromList}
+                closeItemArtPage={closeItemArtPage}
               />
             }
           >
             {searchParams.get('details') ? (
-              <Route index element={<ItemArtPage detailArt={detailArt} />} />
+              <Route
+                index
+                element={
+                  <ItemArtPage
+                    detailArt={detailArt}
+                    closeItemArtPage={closeItemArtPage}
+                  />
+                }
+              />
             ) : null}
           </Route>
         </Routes>
