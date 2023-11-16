@@ -8,6 +8,8 @@ import { Routes, Route } from 'react-router-dom';
 import ItemArtPage from '../components/ItemArtPage';
 import { useSearchParams } from 'react-router-dom';
 
+import { ArtDataContext } from '../providers/context';
+
 export type Arts = {
   id: string;
   artist_display: string;
@@ -42,7 +44,7 @@ const ArtsLoader = () => {
       const response = await fetch(url);
       const dataArts = await response.json();
 
-      if (dataArts.data.length) {
+      if (dataArts.data.length !== undefined) {
         setArts(dataArts.data);
         setTotalPages(dataArts.pagination.total_pages);
         if (searchParams.get('details')) {
@@ -103,45 +105,47 @@ const ArtsLoader = () => {
   };
   return (
     <>
-      <Search searchByQuery={searchByQuery} query={query} />
-      <SelectItemsPerPage
-        itemsPerPage={itemsPerPage}
-        changeItemsPerPage={changeItemsPerPage}
-      />
-      <div className="container-arts">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ListOfArts
-                arts={arts}
-                isLoading={isLoading}
-                clickOnArtFromList={clickOnArtFromList}
-                closeItemArtPage={closeItemArtPage}
-              />
-            }
-          >
-            {searchParams.get('details') ? (
-              <Route
-                index
-                element={
-                  <ItemArtPage
-                    detailArt={detailArt}
-                    closeItemArtPage={closeItemArtPage}
-                  />
-                }
-              />
-            ) : null}
-          </Route>
-        </Routes>
-      </div>
-      {totalPages ? (
-        <Pagination
-          currentPage={currentPage}
-          changePage={changePage}
-          totalPages={totalPages}
+      <ArtDataContext.Provider value={{ query, arts }}>
+        <Search searchByQuery={searchByQuery} />
+        <SelectItemsPerPage
+          itemsPerPage={itemsPerPage}
+          changeItemsPerPage={changeItemsPerPage}
         />
-      ) : null}
+        <div className="container-arts">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ListOfArts
+                  isLoading={isLoading}
+                  clickOnArtFromList={clickOnArtFromList}
+                  closeItemArtPage={closeItemArtPage}
+                />
+              }
+            >
+              {searchParams.get('details') ? (
+                <Route
+                  index
+                  element={
+                    <ItemArtPage
+                      detailArt={detailArt}
+                      closeItemArtPage={closeItemArtPage}
+                    />
+                  }
+                />
+              ) : null}
+            </Route>
+          </Routes>
+        </div>
+        {totalPages ? (
+          <Pagination
+            currentPage={currentPage}
+            changePage={changePage}
+            totalPages={totalPages}
+          />
+        ) : null}
+      </ArtDataContext.Provider>
+
       <MakeError />
     </>
   );

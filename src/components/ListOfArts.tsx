@@ -1,23 +1,24 @@
 import React from 'react';
-import { Arts } from '../contatiners/ArtsLoader';
+// import { Arts } from '../contatiners/ArtsLoader';
 import { Outlet } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
+import { useArtDatarContext } from '../providers/context';
 
 interface Props {
-  arts: Arts;
+  // arts: Arts;
   clickOnArtFromList: (index: string, id: string) => void;
   closeItemArtPage: () => void;
   isLoading: boolean;
 }
 
 const ListOfArts: React.FC<Props> = ({
-  arts,
+  // arts,
   isLoading,
   clickOnArtFromList,
   closeItemArtPage,
 }) => {
   const [searchParams] = useSearchParams();
-
+  const { arts } = useArtDatarContext();
   return (
     <>
       {isLoading ? (

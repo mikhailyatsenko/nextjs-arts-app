@@ -1,11 +1,13 @@
 import React from 'react';
+import { useArtDatarContext } from '../providers/context';
 
 interface Props {
   searchByQuery: (searchQuery: string) => void;
-  query: string;
+  // query: string;
 }
 
-const Search: React.FC<Props> = ({ searchByQuery, query }) => {
+const Search: React.FC<Props> = ({ searchByQuery }) => {
+  const { query } = useArtDatarContext();
   return (
     <>
       <p className="description">
