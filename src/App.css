@@ -54,14 +54,14 @@ img.art-img {
   width: 80%;
 }
 
-.art-item-list {
+.art-list-item {
   cursor: pointer;
   width: fit-content;
   transition: all 0.1s;
   padding: 10px;
 }
 
-.art-item-list:hover {
+.art-list-item:hover {
   transform: scale(1.02);
   background-color: #ffffff0d;
 

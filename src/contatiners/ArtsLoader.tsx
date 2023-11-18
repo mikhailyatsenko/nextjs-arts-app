@@ -105,7 +105,9 @@ const ArtsLoader = () => {
   };
   return (
     <>
-      <ArtDataContext.Provider value={{ query, arts }}>
+      <ArtDataContext.Provider
+        value={{ query, arts, totalPages, currentPage, detailArt }}
+      >
         <Search searchByQuery={searchByQuery} />
         <SelectItemsPerPage
           itemsPerPage={itemsPerPage}
@@ -126,24 +128,13 @@ const ArtsLoader = () => {
               {searchParams.get('details') ? (
                 <Route
                   index
-                  element={
-                    <ItemArtPage
-                      detailArt={detailArt}
-                      closeItemArtPage={closeItemArtPage}
-                    />
-                  }
+                  element={<ItemArtPage closeItemArtPage={closeItemArtPage} />}
                 />
               ) : null}
             </Route>
           </Routes>
         </div>
-        {totalPages ? (
-          <Pagination
-            currentPage={currentPage}
-            changePage={changePage}
-            totalPages={totalPages}
-          />
-        ) : null}
+        {totalPages ? <Pagination changePage={changePage} /> : null}
       </ArtDataContext.Provider>
 
       <MakeError />

@@ -5,7 +5,6 @@ import { useSearchParams } from 'react-router-dom';
 import { useArtDatarContext } from '../providers/context';
 
 interface Props {
-  // arts: Arts;
   clickOnArtFromList: (index: string, id: string) => void;
   closeItemArtPage: () => void;
   isLoading: boolean;
@@ -36,7 +35,8 @@ const ListOfArts: React.FC<Props> = ({
             <div
               onClick={() => clickOnArtFromList((index + 1).toString(), art.id)}
               key={index}
-              className="art-item-list"
+              className="art-list-item"
+              data-testid="art-list-item"
             >
               <h2>{art.artist_display}</h2>
               <h3>{art.title}</h3>

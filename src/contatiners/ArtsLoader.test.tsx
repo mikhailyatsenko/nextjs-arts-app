@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import ArtsLoader from './ArtsLoader';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
+import { act } from 'react-dom/test-utils';
+import { waitFor } from '@testing-library/react';
 
 const MOCK_DATA = {
   preference: null,
@@ -66,20 +68,28 @@ const MOCK_DATA = {
 
 global.fetch = jest.fn();
 
-const mockFetch = fetch as jest.MockedFunction<typeof fetch>;
+describe('loader tests', () => {
+  test('Renders items on the main page', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(MOCK_DATA),
+      })
+    ) as jest.Mock;
 
-describe('user tests', () => {
-  test('Renders the main page', () => {
-    mockFetch.mockResolvedValue({
-      json: () => Promise.resolve(MOCK_DATA),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    render(
-      <MemoryRouter>
-        <ArtsLoader />
-      </MemoryRouter>
+    await act(async () =>
+      render(
+        <MemoryRouter>
+          <ArtsLoader />
+        </MemoryRouter>
+      )
     );
+    const artsLoadedOnPage = await screen.findAllByTestId('art-list-item');
+    expect(artsLoadedOnPage.length).toBe(5);
 
-    expect(true).toBeTruthy();
+    const selectItemsOnPage = screen.getByTestId('select-items-on-page');
+    fireEvent.change(selectItemsOnPage, { target: { value: 3 } });
+    expect(
+      (screen.getByRole('option', { name: '3' }) as HTMLOptionElement).selected
+    ).toBe(true);
   });
 });

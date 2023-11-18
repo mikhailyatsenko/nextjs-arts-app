@@ -1,11 +1,11 @@
-import { DetailArt } from '../contatiners/ArtsLoader';
+import { useArtDatarContext } from '../providers/context';
 
 interface Props {
-  detailArt: DetailArt;
   closeItemArtPage: () => void;
 }
 
-const ItemArtPage = ({ detailArt, closeItemArtPage }: Props) => {
+const ItemArtPage = ({ closeItemArtPage }: Props) => {
+  const { detailArt } = useArtDatarContext();
   return detailArt.title ? (
     <div className="art-item">
       <h2>{detailArt.artist_display}</h2>

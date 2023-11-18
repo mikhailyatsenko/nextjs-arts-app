@@ -1,16 +1,12 @@
 import React from 'react';
+import { useArtDatarContext } from '../providers/context';
 
 interface Props {
-  currentPage: string;
   changePage: (page: string) => void;
-  totalPages: number;
 }
 
-const Pagination: React.FC<Props> = ({
-  currentPage,
-  changePage,
-  totalPages,
-}) => {
+const Pagination: React.FC<Props> = ({ changePage }) => {
+  const { totalPages, currentPage } = useArtDatarContext();
   const currentPageNum = Number(currentPage);
   const pagesToDisplay: number[] = [];
   const maxPageLimitToDisplay = () =>

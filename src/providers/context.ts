@@ -1,8 +1,16 @@
 import { createContext, useContext } from 'react';
 import { Arts } from '../contatiners/ArtsLoader';
+import { DetailArt } from '../contatiners/ArtsLoader';
 
 export const ArtDataContext = createContext<
-  { query: string; arts: Arts } | undefined
+  | {
+      query: string;
+      arts: Arts;
+      detailArt: DetailArt;
+      totalPages: number;
+      currentPage: string;
+    }
+  | undefined
 >(undefined);
 
 export function useArtDatarContext() {

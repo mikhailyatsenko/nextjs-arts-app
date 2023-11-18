@@ -17,9 +17,14 @@ const SelectItemsPerPage = ({ itemsPerPage, changeItemsPerPage }: Props) => {
         onChange={(e) => {
           changeItemsPerPage(e.target.value);
         }}
+        data-testid="select-items-on-page"
       >
         {itemsToDisplay.map((itemNum, index) => (
-          <option key={index} value={itemNum}>
+          <option
+            key={index}
+            value={itemNum}
+            data-testid="select-items-on-page-option"
+          >
             {itemNum}
           </option>
         ))}
