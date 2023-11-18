@@ -3,7 +3,6 @@ import ArtsLoader from './ArtsLoader';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
-import { waitFor } from '@testing-library/react';
 
 const MOCK_DATA = {
   preference: null,
