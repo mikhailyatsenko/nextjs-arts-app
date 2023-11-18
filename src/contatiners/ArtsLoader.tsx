@@ -33,7 +33,9 @@ const ArtsLoader = () => {
     searchParams.get('page') ? searchParams.get('page')! : '1'
   );
   const [selectedArtId, setSelectedArtId] = useState('');
+
   const [detailArt, setDetailArt] = useState<DetailArt>({} as DetailArt);
+
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   useEffect(() => {
