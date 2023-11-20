@@ -1,9 +1,14 @@
+import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { changeItemsPerPage } from '../store/slices/commonSlice';
+
 interface Props {
-  itemsPerPage: number;
-  changeItemsPerPage: (itemsPerPage: string) => void;
+  selectItemArtPage: () => void;
 }
 
-const SelectItemsPerPage = ({ itemsPerPage, changeItemsPerPage }: Props) => {
+const SelectItemsPerPage = ({ selectItemArtPage }: Props) => {
+  const dispatch = useAppDispatch();
+  const { itemsPerPage } = useAppSelector((state) => state.common);
   const itemsToDisplay: number[] = [];
   const maxItemsPerPage: number = 10;
   for (let i = 1; i <= maxItemsPerPage; i++) {
@@ -15,7 +20,8 @@ const SelectItemsPerPage = ({ itemsPerPage, changeItemsPerPage }: Props) => {
       <select
         defaultValue={itemsPerPage}
         onChange={(e) => {
-          changeItemsPerPage(e.target.value);
+          dispatch(changeItemsPerPage(e.target.value));
+          selectItemArtPage();
         }}
         data-testid="select-items-on-page"
       >

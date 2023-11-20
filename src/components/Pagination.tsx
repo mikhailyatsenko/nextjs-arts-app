@@ -2,7 +2,7 @@ import React from 'react';
 import { useArtDatarContext } from '../providers/context';
 
 interface Props {
-  changePage: (page: string) => void;
+  changePage: (pageNum: number) => void;
 }
 
 const Pagination: React.FC<Props> = ({ changePage }) => {
@@ -17,20 +17,30 @@ const Pagination: React.FC<Props> = ({ changePage }) => {
   return (
     <>
       <div className="pagination">
-        <div onClick={() => changePage((currentPageNum - 1).toString())}>
+        <div
+          onClick={() =>
+            // dispatch(setCurrentPage((currentPageNum - 1).toString()))
+            changePage(currentPageNum - 1)
+          }
+        >
           &laquo;
         </div>
 
         {pagesToDisplay.map((page, index) => (
           <div
             key={index}
-            onClick={() => changePage(page.toString())}
+            onClick={() => changePage(page)}
             className={page === currentPageNum ? 'active' : ''}
           >
             {page}
           </div>
         ))}
-        <div onClick={() => changePage((currentPageNum - 1).toString())}>
+        <div
+          onClick={() =>
+            // dispatch(setCurrentPage((currentPageNum + 1).toString()))
+            changePage(currentPageNum + 1)
+          }
+        >
           &raquo;
         </div>
       </div>

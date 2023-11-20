@@ -4,7 +4,6 @@ import { DetailArt } from '../contatiners/ArtsLoader';
 
 export const ArtDataContext = createContext<
   | {
-      query: string;
       arts: Arts;
       detailArt: DetailArt;
       totalPages: number;

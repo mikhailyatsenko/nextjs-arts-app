@@ -4,7 +4,7 @@ interface Props {
   closeItemArtPage: () => void;
 }
 
-const ItemArtPage = ({ closeItemArtPage }: Props) => {
+const ItemArtPage: React.FC<Props> = ({ closeItemArtPage }) => {
   const { detailArt } = useArtDatarContext();
   return detailArt.title ? (
     <div className="art-item">

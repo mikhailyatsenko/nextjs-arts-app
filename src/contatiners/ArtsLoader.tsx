@@ -10,6 +10,13 @@ import { useSearchParams } from 'react-router-dom';
 
 import { ArtDataContext } from '../providers/context';
 
+import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+
+import { setCurrentPage } from '../store/slices/commonSlice';
+import { setSelectedArtId } from '../store/slices/asyncSlice';
+import { fetchArts } from '../store/asyncActions/fetchArts';
+
 export type Arts = {
   id: string;
   artist_display: string;
@@ -24,44 +31,43 @@ export interface DetailArt {
   provenance_text: string;
 }
 const ArtsLoader = () => {
+  const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useState(localStorage.getItem('query') || '');
-  const [arts, setArts] = useState<Arts>([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState<string>(
-    searchParams.get('page') ? searchParams.get('page')! : '1'
+
+  const { query, itemsPerPage, currentPage } = useAppSelector(
+    (state) => state.common
   );
-  const [selectedArtId, setSelectedArtId] = useState('');
+
+  const { arts, isLoading, totalPages, selectedArtId } = useAppSelector(
+    (state) => state.async
+  );
 
   const [detailArt, setDetailArt] = useState<DetailArt>({} as DetailArt);
 
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  useEffect(() => {
+    dispatch(
+      setCurrentPage(searchParams.get('page') ? searchParams.get('page')! : '1')
+    );
+  }, []);
+
+  // useEffect(() => {
+  //   if (searchParams.get('details')) {
+  //     // const detailsNum = searchParams.get('details');
+  //     setSearchParams({ page: currentPage.toString() });
+  //   }
+  // }, [currentPage]);
 
   useEffect(() => {
-    const fetchArts = async () => {
-      setIsLoading(true);
-
-      const url = `https://api.artic.edu/api/v1/artworks/search?q=${query}&limit=${itemsPerPage}&page=${currentPage}&fields=artist_display,title,image_id,id`;
-      const response = await fetch(url);
-      const dataArts = await response.json();
-
-      if (dataArts.data.length !== undefined) {
-        setArts(dataArts.data);
-        setTotalPages(dataArts.pagination.total_pages);
-        if (searchParams.get('details')) {
-          setSelectedArtId(
-            dataArts.data[Number(searchParams.get('details')) - 1].id
-          );
-        }
-      } else {
-        setArts([]);
-      }
-      setIsLoading(false);
-    };
-
-    fetchArts();
+    dispatch(fetchArts());
   }, [query, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    if (arts.length && searchParams.get('details')) {
+      dispatch(
+        setSelectedArtId(arts[Number(searchParams.get('details')) - 1].id)
+      );
+    }
+  }, [arts]);
 
   useEffect(() => {
     const fetchArtDetailInfo = async () => {
@@ -80,26 +86,19 @@ const ArtsLoader = () => {
     }
   }, [selectedArtId, arts]);
 
-  const searchByQuery = (searchQuery: string) => {
-    setQuery(searchQuery);
-    localStorage.setItem('query', searchQuery);
-  };
-
-  const changePage = (page: string) => {
-    setCurrentPage(page);
-    setSearchParams({ page: page.toString() });
-  };
-
   const clickOnArtFromList = (index: string, id: string) => {
     setDetailArt({} as DetailArt);
     setSearchParams({ page: currentPage ?? 1, details: index });
-    setSelectedArtId(id);
+    dispatch(setSelectedArtId(id));
   };
 
-  const changeItemsPerPage = (itemsPerPage: string) => {
+  const selectItemArtPage = () => {
     setSearchParams({});
-    setCurrentPage('1');
-    setItemsPerPage(Number(itemsPerPage));
+  };
+
+  const changePage = (pageNum: number) => {
+    setSearchParams({ page: pageNum.toString() });
+    dispatch(setCurrentPage(pageNum.toString()));
   };
 
   const closeItemArtPage = () => {
@@ -108,13 +107,10 @@ const ArtsLoader = () => {
   return (
     <>
       <ArtDataContext.Provider
-        value={{ query, arts, totalPages, currentPage, detailArt }}
+        value={{ arts, totalPages, currentPage, detailArt }}
       >
-        <Search searchByQuery={searchByQuery} />
-        <SelectItemsPerPage
-          itemsPerPage={itemsPerPage}
-          changeItemsPerPage={changeItemsPerPage}
-        />
+        <Search />
+        <SelectItemsPerPage selectItemArtPage={selectItemArtPage} />
         <div className="container-arts">
           <Routes>
             <Route
