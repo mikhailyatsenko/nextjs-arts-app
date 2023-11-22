@@ -1,26 +1,26 @@
 import React from 'react';
-// import { Arts } from '../contatiners/ArtsLoader';
+import { Arts } from '../contatiners/ArtsLoader';
 import { Outlet } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
-import { useArtDatarContext } from '../providers/context';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 interface Props {
+  arts: Arts[];
   clickOnArtFromList: (index: string, id: string) => void;
   closeItemArtPage: () => void;
-  isLoading: boolean;
 }
 
 const ListOfArts: React.FC<Props> = ({
-  // arts,
-  isLoading,
+  arts,
   clickOnArtFromList,
   closeItemArtPage,
 }) => {
+  const { isArtsListLoading } = useAppSelector((state) => state.async);
+
   const [searchParams] = useSearchParams();
-  const { arts } = useArtDatarContext();
   return (
     <>
-      {isLoading ? (
+      {isArtsListLoading ? (
         <span className="loader"></span>
       ) : arts[0] ? (
         <div

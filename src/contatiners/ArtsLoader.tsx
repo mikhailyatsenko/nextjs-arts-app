@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Search from '../components/Search';
 import ListOfArts from '../components/ListOfArts';
 import Pagination from '../components/Pagination';
@@ -7,22 +7,18 @@ import SelectItemsPerPage from '../components/SelectItemsPerPage';
 import { Routes, Route } from 'react-router-dom';
 import ItemArtPage from '../components/ItemArtPage';
 import { useSearchParams } from 'react-router-dom';
-
-import { ArtDataContext } from '../providers/context';
-
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useAppDispatch } from '../hooks/useAppDispatch';
-
 import { setCurrentPage } from '../store/slices/commonSlice';
 import { setSelectedArtId } from '../store/slices/asyncSlice';
-import { fetchArts } from '../store/asyncActions/fetchArts';
+import { artsApi } from '../services/ArtsService';
 
 export type Arts = {
   id: string;
   artist_display: string;
   title: string;
   image_id: string;
-}[];
+};
 
 export interface DetailArt {
   artist_display: string;
@@ -30,6 +26,7 @@ export interface DetailArt {
   image_id: string;
   provenance_text: string;
 }
+
 const ArtsLoader = () => {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,11 +35,23 @@ const ArtsLoader = () => {
     (state) => state.common
   );
 
-  const { arts, isLoading, totalPages, selectedArtId } = useAppSelector(
-    (state) => state.async
+  const { selectedArtId } = useAppSelector((state) => state.async);
+
+  const { arts, totalPages } = artsApi.useFetchAllArtsQuery(
+    `${query}&limit=${itemsPerPage}&page=${currentPage}`,
+    {
+      selectFromResult: ({ data }) => ({
+        arts: data?.data,
+        totalPages: data?.pagination.total_pages,
+      }),
+    }
   );
 
-  const [detailArt, setDetailArt] = useState<DetailArt>({} as DetailArt);
+  const { data: detailArt } = artsApi.useFetchSelectedArtQuery(selectedArtId, {
+    selectFromResult: ({ data }) => ({
+      data: data?.data,
+    }),
+  });
 
   useEffect(() => {
     dispatch(
@@ -50,44 +59,25 @@ const ArtsLoader = () => {
     );
   }, []);
 
-  // useEffect(() => {
-  //   if (searchParams.get('details')) {
-  //     // const detailsNum = searchParams.get('details');
-  //     setSearchParams({ page: currentPage.toString() });
-  //   }
-  // }, [currentPage]);
-
   useEffect(() => {
-    dispatch(fetchArts());
-  }, [query, currentPage, itemsPerPage]);
-
-  useEffect(() => {
-    if (arts.length && searchParams.get('details')) {
+    if (arts && arts.length && searchParams.get('details')) {
       dispatch(
-        setSelectedArtId(arts[Number(searchParams.get('details')) - 1].id)
+        setSelectedArtId(
+          arts && arts[Number(searchParams.get('details')) - 1].id
+        )
       );
     }
   }, [arts]);
 
   useEffect(() => {
-    const fetchArtDetailInfo = async () => {
-      const url = `https://api.artic.edu/api/v1/artworks/${selectedArtId}?fields=artist_display,title,image_id,provenance_text`;
-      const response = await fetch(url);
-      const detailArtData = await response.json();
-
-      setDetailArt(detailArtData.data);
-    };
-    if (selectedArtId) {
-      fetchArtDetailInfo();
+    if (selectedArtId)
       window.scrollTo({
         top: 200,
         behavior: 'smooth',
       });
-    }
-  }, [selectedArtId, arts]);
+  }, [selectedArtId]);
 
   const clickOnArtFromList = (index: string, id: string) => {
-    setDetailArt({} as DetailArt);
     setSearchParams({ page: currentPage ?? 1, details: index });
     dispatch(setSelectedArtId(id));
   };
@@ -106,34 +96,37 @@ const ArtsLoader = () => {
   };
   return (
     <>
-      <ArtDataContext.Provider
-        value={{ arts, totalPages, currentPage, detailArt }}
-      >
-        <Search />
-        <SelectItemsPerPage selectItemArtPage={selectItemArtPage} />
-        <div className="container-arts">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ListOfArts
-                  isLoading={isLoading}
-                  clickOnArtFromList={clickOnArtFromList}
-                  closeItemArtPage={closeItemArtPage}
-                />
-              }
-            >
-              {searchParams.get('details') ? (
-                <Route
-                  index
-                  element={<ItemArtPage closeItemArtPage={closeItemArtPage} />}
-                />
-              ) : null}
-            </Route>
-          </Routes>
-        </div>
-        {totalPages ? <Pagination changePage={changePage} /> : null}
-      </ArtDataContext.Provider>
+      <Search />
+      <SelectItemsPerPage selectItemArtPage={selectItemArtPage} />
+      <div className="container-arts">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ListOfArts
+                arts={arts ? arts : []}
+                clickOnArtFromList={clickOnArtFromList}
+                closeItemArtPage={closeItemArtPage}
+              />
+            }
+          >
+            {searchParams.get('details') ? (
+              <Route
+                index
+                element={
+                  <ItemArtPage
+                    closeItemArtPage={closeItemArtPage}
+                    detailArt={detailArt ? detailArt : ({} as DetailArt)}
+                  />
+                }
+              />
+            ) : null}
+          </Route>
+        </Routes>
+      </div>
+      {totalPages ? (
+        <Pagination changePage={changePage} totalPages={Number(totalPages)} />
+      ) : null}
 
       <MakeError />
     </>

@@ -1,6 +1,6 @@
 import { RootState } from '..';
 
-import { Arts } from '../slices/asyncSlice';
+import { Arts } from '../../contatiners/ArtsLoader';
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setTotalPages } from '../slices/asyncSlice';
@@ -23,13 +23,6 @@ export const fetchArts = createAsyncThunk<
     if (dataArts.data.length !== undefined) {
       dispatch(setTotalPages(dataArts.pagination.total_pages));
       return dataArts.data;
-
-      //   if (searchParams.get('details')) {
-
-      //     setSelectedArtId(
-      //       dataArts.data[Number(searchParams.get('details')) - 1].id
-      //     );
-      //   }
     } else {
       return [];
     }

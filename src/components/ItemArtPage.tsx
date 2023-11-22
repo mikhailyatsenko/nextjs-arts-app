@@ -1,12 +1,16 @@
-import { useArtDatarContext } from '../providers/context';
+import { DetailArt } from '../contatiners/ArtsLoader';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 interface Props {
   closeItemArtPage: () => void;
+  detailArt: DetailArt;
 }
 
-const ItemArtPage: React.FC<Props> = ({ closeItemArtPage }) => {
-  const { detailArt } = useArtDatarContext();
-  return detailArt.title ? (
+const ItemArtPage: React.FC<Props> = ({ closeItemArtPage, detailArt }) => {
+  const { isSelectedArtLoading } = useAppSelector((state) => state.async);
+  return isSelectedArtLoading ? (
+    <span className="loader"></span>
+  ) : (
     <div className="art-item">
       <h2>{detailArt.artist_display}</h2>
       <h3>{detailArt.title}</h3>
@@ -20,8 +24,6 @@ const ItemArtPage: React.FC<Props> = ({ closeItemArtPage }) => {
         Close details
       </button>
     </div>
-  ) : (
-    <span className="loader"></span>
   );
 };
 

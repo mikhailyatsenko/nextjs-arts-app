@@ -1,25 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchArts } from '../asyncActions/fetchArts';
-import { PayloadAction } from '@reduxjs/toolkit';
-
-export interface Arts {
-  id: string;
-  artist_display: string;
-  title: string;
-  image_id: string;
-}
 
 interface InitialState {
-  isLoading: boolean;
-  arts: Arts[];
+  isArtsListLoading: boolean;
+  isSelectedArtLoading: boolean;
   totalPages: number;
   selectedArtId: string;
   error: string | undefined;
 }
 
 const initialState: InitialState = {
-  isLoading: false,
-  arts: [],
+  isArtsListLoading: false,
+  isSelectedArtLoading: false,
   totalPages: 0,
   selectedArtId: '',
   error: '',
@@ -35,28 +26,20 @@ const asyncSlice = createSlice({
     setSelectedArtId(state, action) {
       state.selectedArtId = action.payload;
     },
-  },
-
-  extraReducers(builder) {
-    builder.addCase(fetchArts.pending, (state) => {
-      state.isLoading = true;
-      state.error = '';
-    });
-    builder.addCase(fetchArts.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.error = '';
-      state.arts = action.payload;
-    });
-    builder.addCase(
-      fetchArts.rejected,
-      (state, action: PayloadAction<string | undefined>) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      }
-    );
+    setIsArtsListLoading(state, action) {
+      state.isArtsListLoading = action.payload;
+    },
+    setIsSelectedArtIdLoading(state, action) {
+      state.isSelectedArtLoading = action.payload;
+    },
   },
 });
 
-export const { setTotalPages, setSelectedArtId } = asyncSlice.actions;
+export const {
+  setTotalPages,
+  setSelectedArtId,
+  setIsSelectedArtIdLoading,
+  setIsArtsListLoading,
+} = asyncSlice.actions;
 
 export default asyncSlice.reducer;

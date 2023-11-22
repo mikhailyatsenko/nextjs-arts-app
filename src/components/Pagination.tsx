@@ -1,12 +1,13 @@
 import React from 'react';
-import { useArtDatarContext } from '../providers/context';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 interface Props {
   changePage: (pageNum: number) => void;
+  totalPages: number;
 }
 
-const Pagination: React.FC<Props> = ({ changePage }) => {
-  const { totalPages, currentPage } = useArtDatarContext();
+const Pagination: React.FC<Props> = ({ changePage, totalPages }) => {
+  const { currentPage } = useAppSelector((state) => state.common);
   const currentPageNum = Number(currentPage);
   const pagesToDisplay: number[] = [];
   const maxPageLimitToDisplay = () =>
@@ -17,14 +18,7 @@ const Pagination: React.FC<Props> = ({ changePage }) => {
   return (
     <>
       <div className="pagination">
-        <div
-          onClick={() =>
-            // dispatch(setCurrentPage((currentPageNum - 1).toString()))
-            changePage(currentPageNum - 1)
-          }
-        >
-          &laquo;
-        </div>
+        <div onClick={() => changePage(currentPageNum - 1)}>&laquo;</div>
 
         {pagesToDisplay.map((page, index) => (
           <div
@@ -35,14 +29,7 @@ const Pagination: React.FC<Props> = ({ changePage }) => {
             {page}
           </div>
         ))}
-        <div
-          onClick={() =>
-            // dispatch(setCurrentPage((currentPageNum + 1).toString()))
-            changePage(currentPageNum + 1)
-          }
-        >
-          &raquo;
-        </div>
+        <div onClick={() => changePage(currentPageNum + 1)}>&raquo;</div>
       </div>
     </>
   );
