@@ -125,7 +125,7 @@ const ArtsLoader = () => {
         </Routes>
       </div>
       {totalPages ? (
-        <Pagination changePage={changePage} totalPages={Number(totalPages)} />
+        <Pagination changePage={changePage} totalPages={totalPages} />
       ) : null}
 
       <MakeError />

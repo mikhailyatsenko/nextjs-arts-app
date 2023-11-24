@@ -4,9 +4,9 @@ import { setIsArtsListLoading } from '../store/slices/asyncSlice';
 import { setIsSelectedArtIdLoading } from '../store/slices/asyncSlice';
 import { DetailArt } from '../contatiners/ArtsLoader';
 
-interface ArtsListDataResponse {
+export interface ArtsListDataResponse {
   data: Arts[];
-  pagination: { total_pages: string };
+  pagination: { total_pages: number };
 }
 
 interface DetailArtResponse {
