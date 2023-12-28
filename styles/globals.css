@@ -190,15 +190,19 @@ button {
   transition: border-color 0.25s;
   vertical-align: middle;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button.close-detais-button {
   margin-top: 16px;
 }
+
 button.close-detais-button:hover {
   border-color: #a25941;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
