@@ -1,37 +1,41 @@
 import React from 'react';
 import { Arts } from '@/pages/layout';
-// import { useAppSelector } from '../hooks/useAppSelector';
+import { useRouter } from 'next/router';
 
 interface Props {
   arts: Arts[];
-  //   clickOnArtFromList: (index: string, id: string) => void;
   //   closeItemArtPage: () => void;
 }
 
-const ListOfArts: React.FC<Props> = ({
-  arts,
-  //   clickOnArtFromList,
-  //   closeItemArtPage,
-}) => {
-  //   const { isArtsListLoading } = useAppSelector((state) => state.async);
+const ListOfArts: React.FC<Props> = ({ arts }) => {
+  const router = useRouter();
+  const clickOnArtFromList = (selectedArtId: string) => {
+    router.push({
+      query: {
+        ...router.query,
+        selectedArtId: selectedArtId,
+      },
+      hash: 'art-item',
+    });
+  };
+
+  const closeSelectedArt = () => {
+    const route = router.query;
+    if (route.hasOwnProperty('selectedArtId')) delete route.selectedArtId;
+    router.push({ query: { ...route } });
+  };
 
   return (
-    <>
-      {/* {isArtsListLoading ? (
-        <span className="loader"></span>
-      ) : arts[0] ? ( */}
-      {/* <div
-          className={
-            Boolean(searchParams.get('details'))
-              ? 'arts-list collapsed'
-              : 'arts-list'
-          }
-        >
-          <div onClick={closeItemArtPage} className="art-list-overlay"></div> */}
+    <div
+      className={`arts-list ${
+        router.query.hasOwnProperty('selectedArtId') ? ' collapsed' : ''
+      }`}
+    >
+      <div onClick={closeSelectedArt} className="art-list-overlay"></div>
       {arts &&
         arts.map((art, index) => (
           <div
-            //   onClick={() => clickOnArtFromList((index + 1).toString(), art.id)}
+            onClick={() => clickOnArtFromList(art.id)}
             key={index}
             className="art-list-item"
             data-testid="art-list-item"
@@ -50,7 +54,7 @@ const ListOfArts: React.FC<Props> = ({
         <div>Nothing found</div>
       )}
       <Outlet /> */}
-    </>
+    </div>
   );
 };
 

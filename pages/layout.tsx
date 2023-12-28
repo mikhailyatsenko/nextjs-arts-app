@@ -1,17 +1,10 @@
-// import { ReactNode } from 'react';
 import Head from 'next/head';
 import Search from '@/components/Search';
 import SelectItemsPerPage from '@/components/SelectItemsPerPage';
-// import Pagination from '@/components/Pagination';
+import Pagination from '@/components/Pagination';
 import ListOfArts from '@/components/ListOfArts';
 import { TransformedArtsListResponse } from '@/services/ArtService';
-
-export type Arts = {
-  id: string;
-  artist_display: string;
-  title: string;
-  image_id: string;
-};
+import SelectedArt from '@/components/SelectedArt';
 
 export interface DetailArt {
   artist_display: string;
@@ -20,8 +13,19 @@ export interface DetailArt {
   provenance_text: string;
 }
 
-const Layout = ({ arts }: TransformedArtsListResponse) => {
-  // console.log(arts, totalPages);
+interface Props extends TransformedArtsListResponse {
+  limit: string;
+  detailArt: DetailArt;
+}
+
+export type Arts = {
+  id: string;
+  artist_display: string;
+  title: string;
+  image_id: string;
+};
+
+const Layout = ({ arts, limit, totalPages, detailArt }: Props) => {
   return (
     <>
       <Head>
@@ -32,24 +36,12 @@ const Layout = ({ arts }: TransformedArtsListResponse) => {
       </Head>
       <main>
         <Search />
-        <SelectItemsPerPage />
+        <SelectItemsPerPage limit={limit} />
         <div className="container-arts">
           <ListOfArts arts={arts} />
-          {/* {searchParams.get('details') ? (
-            <ItemArtPage
-              closeItemArtPage={closeItemArtPage}
-              detailArt={detailArt ? detailArt : ({} as DetailArt)}
-            />
-          ) : null} */}
+          {detailArt ? <SelectedArt detailArt={detailArt} /> : null}
         </div>
-        {/* {totalPages ? ( */}
-        {/* <Pagination
-          // changePage={changePage}
-          totalPages={totalPages}
-        /> */}
-        {/* // ) : null} */}
-
-        {/* <MakeError /> */}
+        {totalPages ? <Pagination totalPages={totalPages} /> : null}
       </main>
     </>
   );

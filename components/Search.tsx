@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 const Search: React.FC = () => {
   const router = useRouter();
-  // const { search = '', limit = '5' } = router.query;
+  const { search } = router.query;
   return (
     <>
       <p className="description">
@@ -21,7 +21,7 @@ const Search: React.FC = () => {
           });
         }}
       >
-        <input className="form-input" defaultValue={'query'} id="query"></input>
+        <input className="form-input" defaultValue={search} id="query"></input>
         <button type="submit">Search</button>
       </form>
     </>

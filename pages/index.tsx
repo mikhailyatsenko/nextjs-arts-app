@@ -1,22 +1,39 @@
 import Layout from './layout';
-
-import { fetchAllArts, artsApi } from '@/services/ArtService';
+import { DetailArt } from './layout';
+import { fetchAllArts, fetchSelectedArt } from '@/services/ArtService';
 import { wrapper } from '@/store';
 import { TransformedArtsListResponse } from '@/services/ArtService';
 
-export default function Home(props: TransformedArtsListResponse) {
+interface SevereSideProps extends TransformedArtsListResponse {
+  limit: string;
+  detailArt: DetailArt;
+}
+
+export default function Home(props: SevereSideProps) {
   return <Layout {...props} />;
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    console.log('context', context.query);
-    const { page = '1', limit = '5', search = '' } = context.query;
-    const data = await store.dispatch(
+    const {
+      page = '1',
+      limit = '5',
+      search = '',
+      selectedArtId = '',
+    } = context.query;
+    const artsData = await store.dispatch(
       fetchAllArts.initiate(`${search}&limit=${limit}&page=${page}`)
     );
 
-    await Promise.all(store.dispatch(artsApi.util.getRunningQueriesThunk()));
-    return { props: { ...data.data } };
+    let detailArt = null;
+    if (selectedArtId) {
+      const responseDetailArt = await store.dispatch(
+        fetchSelectedArt.initiate(selectedArtId as string)
+      );
+      detailArt = responseDetailArt.data?.data;
+    }
+    // await Promise.all(store.dispatch(artsApi.util.getRunningQueriesThunk()));
+
+    return { props: { ...artsData.data, limit, detailArt } };
   }
 );
