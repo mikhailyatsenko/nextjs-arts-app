@@ -5,4 +5,4 @@
 - cross-browser
 
 ## How it works:
-![image](https://github.com/mikhailyatsenko/nextjs-arts-app/blob/alt/preview.gif)
+![image](https://github.com/mikhailyatsenko/nextjs-arts-app/blob/main/preview.gif)
