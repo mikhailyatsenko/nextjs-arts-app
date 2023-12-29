@@ -16,10 +16,11 @@ const Pagination: React.FC<Props> = ({ totalPages }) => {
   }
 
   const changePage = (page: number) => {
+    const route = router.query;
+    if (route.hasOwnProperty('selectedArtId')) delete route.selectedArtId;
     if (page > 0 && page <= totalPages) {
       router.push({
-        pathname: '/',
-        query: { ...router.query, page },
+        query: { ...route, page },
       });
     }
   };
