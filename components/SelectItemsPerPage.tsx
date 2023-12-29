@@ -8,12 +8,12 @@ const SelectItemsPerPage: React.FC<Props> = ({ limit }) => {
   const router = useRouter();
 
   const handlePerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const route = router.query;
+    if (route.hasOwnProperty('selectedArtId')) delete route.selectedArtId;
     router.push({
-      // pathname: '/',
       query: {
-        ...router.query,
+        ...route,
         page: 1,
-        selectedArtId: '',
         limit: event.target.value,
       },
     });
