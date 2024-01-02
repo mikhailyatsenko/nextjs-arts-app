@@ -1,5 +1,5 @@
 import React from 'react';
-import { Arts } from '@/pages/layout';
+import { Arts } from '@/pages';
 import { useRouter } from 'next/router';
 
 interface Props {
