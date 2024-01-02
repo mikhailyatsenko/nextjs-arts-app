@@ -1,4 +1,4 @@
-import { DetailArt } from '@/pages/layout';
+import { DetailArt } from '@/pages';
 import { useRouter } from 'next/router';
 
 interface Props {
