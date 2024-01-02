@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Arts } from '@/pages/layout';
-import { DetailArt } from '@/pages/layout';
+import { Arts } from '@/pages';
+import { DetailArt } from '@/pages';
 import { HYDRATE } from 'next-redux-wrapper';
 
 export interface ArtsListDataResponse {
