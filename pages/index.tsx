@@ -18,15 +18,15 @@ export interface DetailArt {
 }
 
 export type Arts = {
-  id: string;
+  id: number;
   artist_display: string;
   title: string;
   image_id: string;
 };
 
-interface SevereSideProps extends TransformedArtsListResponse {
+export interface SevereSideProps extends TransformedArtsListResponse {
   limit: string;
-  detailArt: DetailArt;
+  detailArt?: DetailArt;
 }
 
 export default function Home(props: SevereSideProps) {

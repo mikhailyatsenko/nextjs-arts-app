@@ -12,17 +12,25 @@ const Search: React.FC = () => {
       </p>
       <form
         action=""
-        onSubmit={(e) => {
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
+          // console.log(e.currentTarget.elements[0].value);
           router.push({
             query: {
-              search: (e.currentTarget.query as HTMLInputElement).value,
+              search: (e.currentTarget.elements[0] as HTMLInputElement).value,
             },
           });
         }}
       >
-        <input className="form-input" defaultValue={search} id="query"></input>
-        <button type="submit">Search</button>
+        <input
+          data-testid="input-search"
+          className="form-input"
+          defaultValue={search}
+          id="query"
+        ></input>
+        <button data-testid="button-search" type="submit">
+          Search
+        </button>
       </form>
     </>
   );

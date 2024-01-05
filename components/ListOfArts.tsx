@@ -9,7 +9,7 @@ interface Props {
 
 const ListOfArts: React.FC<Props> = ({ arts }) => {
   const router = useRouter();
-  const clickOnArtFromList = (selectedArtId: string) => {
+  const clickOnArtFromList = (selectedArtId: number) => {
     router.push({
       query: {
         ...router.query,
