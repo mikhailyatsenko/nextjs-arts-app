@@ -26,7 +26,7 @@ export type Arts = {
 
 export interface SevereSideProps extends TransformedArtsListResponse {
   limit: string;
-  detailArt?: DetailArt;
+  detailArt: DetailArt | null;
 }
 
 export default function Home(props: SevereSideProps) {
