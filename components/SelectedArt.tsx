@@ -15,7 +15,7 @@ const SelectedArt: React.FC<Props> = ({ detailArt }) => {
   };
 
   return (
-    <div className="art-item" id="art-item">
+    <div className="art-item" id="art-item" data-testid="art-item">
       <h2>{detailArt.artist_display}</h2>
       <h3>{detailArt.title}</h3>
       <img
@@ -24,7 +24,11 @@ const SelectedArt: React.FC<Props> = ({ detailArt }) => {
         alt=""
       />
       <div className="details-provenance">{detailArt.provenance_text}</div>
-      <button onClick={closeSelectedArt} className="close-detais-button">
+      <button
+        onClick={closeSelectedArt}
+        className="close-detais-button"
+        data-testid="close-button"
+      >
         Close details
       </button>
     </div>

@@ -9,7 +9,7 @@ interface Props {
 
 const ListOfArts: React.FC<Props> = ({ arts }) => {
   const router = useRouter();
-  const clickOnArtFromList = (selectedArtId: number) => {
+  const clickOnArtFromList = (selectedArtId: string) => {
     router.push({
       query: {
         ...router.query,
@@ -35,7 +35,7 @@ const ListOfArts: React.FC<Props> = ({ arts }) => {
       {arts &&
         arts.map((art, index) => (
           <div
-            onClick={() => clickOnArtFromList(art.id)}
+            onClick={() => clickOnArtFromList(art.id.toString())}
             key={index}
             className="art-list-item"
             data-testid="art-list-item"
