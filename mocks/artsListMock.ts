@@ -3,7 +3,7 @@ export const artsListMockResponse = {
     total: 123386,
     limit: 5,
     offset: 0,
-    total_pages: 24678,
+    total_pages: 10321,
     current_page: 1,
   },
   data: [

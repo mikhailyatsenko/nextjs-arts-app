@@ -56,7 +56,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const {
       page = '1',
-      limit = '5',
+      limit = '20',
       search = '',
       selectedArtId = '',
     } = context.query;

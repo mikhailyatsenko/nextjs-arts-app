@@ -31,7 +31,11 @@ const ListOfArts: React.FC<Props> = ({ arts }) => {
         router.query.hasOwnProperty('selectedArtId') ? ' collapsed' : ''
       }`}
     >
-      <div onClick={closeSelectedArt} className="art-list-overlay"></div>
+      <div
+        onClick={closeSelectedArt}
+        className="art-list-overlay"
+        data-testid="art-list-overlay"
+      ></div>
       {arts &&
         arts.map((art, index) => (
           <div

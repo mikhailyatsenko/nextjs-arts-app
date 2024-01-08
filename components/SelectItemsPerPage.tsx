@@ -20,8 +20,8 @@ const SelectItemsPerPage: React.FC<Props> = ({ limit }) => {
   };
 
   const itemsToDisplay: number[] = [];
-  const maxItemsPerPage: number = 10;
-  for (let i = 1; i <= maxItemsPerPage; i++) {
+  const maxItemsPerPage: number = 100;
+  for (let i = 20; i <= maxItemsPerPage; i += 20) {
     itemsToDisplay.push(i);
   }
   return (

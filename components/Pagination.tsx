@@ -9,9 +9,13 @@ const Pagination: React.FC<Props> = ({ totalPages }) => {
   const currentPage = router.query.page;
   const currentPageNum = Number(currentPage) || 1;
   const pagesToDisplay: number[] = [];
-  const maxPageLimitToDisplay = () =>
+  const maxPageLimitToDisplay =
     totalPages < 6 ? totalPages : currentPageNum + 6;
-  for (let i = currentPageNum; i < maxPageLimitToDisplay(); i++) {
+
+  for (let i = currentPageNum; i < maxPageLimitToDisplay; i++) {
+    if (i > totalPages) {
+      break;
+    }
     pagesToDisplay.push(i);
   }
 
@@ -20,14 +24,14 @@ const Pagination: React.FC<Props> = ({ totalPages }) => {
     if (route.hasOwnProperty('selectedArtId')) delete route.selectedArtId;
     if (page > 0 && page <= totalPages) {
       router.push({
-        query: { ...route, page },
+        query: { ...route, page: page.toString() },
       });
     }
   };
 
   return (
     <>
-      <div className="pagination">
+      <div className="pagination" data-testid="pagination">
         <div onClick={() => changePage(currentPageNum - 1)}>&laquo;</div>
 
         {pagesToDisplay.map((page, index) => (
