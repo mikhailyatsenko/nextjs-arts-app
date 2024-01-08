@@ -17,7 +17,7 @@ describe('api tests', () => {
     const { data } = await store.dispatch(
       fetchAllArts.initiate('test&limit=${limit}&page=${page}')
     );
-    expect(data).toEqual({ arts: artsListData, totalPages: 24678 });
+    expect(data).toEqual({ arts: artsListData, totalPages: 10321 });
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 

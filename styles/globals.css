@@ -114,16 +114,16 @@ img.art-img {
 
 .arts-list h2 {
   font-size: 1em;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 .arts-list h3 {
   font-size: 0.8em;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; 
+  text-overflow: ellipsis;
 }
 
 .art-item {
@@ -231,17 +231,15 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-
-
 @media only screen and (max-width: 990px) {
   .art-list-item {
-    width: 33.3%
+    width: 33.3%;
   }
 }
 
 @media only screen and (max-width: 767px) {
   .art-list-item {
-    width: 50%
+    width: 50%;
   }
 }
 
@@ -249,7 +247,11 @@ button:focus-visible {
   .arts-list.collapsed {
     display: none;
   }
+
+
+  
+
   .art-list-item {
-    width: 100%
+    width: 100%;
   }
 }

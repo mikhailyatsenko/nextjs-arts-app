@@ -73,7 +73,7 @@ describe('Home', () => {
     fireEvent.click(nextPaginationButton);
     expect(mockRouter.query.page).toBe('2');
 
-    const fivePaginatinButton = screen.getAllByText('5')[1] as HTMLElement;
+    const fivePaginatinButton = screen.getByText('5');
     fireEvent.click(fivePaginatinButton);
     expect(mockRouter.query.page).toBe('5');
 
