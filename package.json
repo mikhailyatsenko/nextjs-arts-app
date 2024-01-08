@@ -53,7 +53,7 @@
       "npx eslint --fix"
     ], 
     "*.(css|scss)": [
-      "stylelint --fix"
+      "npx stylelint --fix"
     ]
   }
 }
