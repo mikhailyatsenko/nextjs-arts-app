@@ -85,6 +85,15 @@ img.art-img {
   object-fit: cover;
 }
 
+.art-item img.art-img {
+  width: auto;
+  height: auto;
+}
+
+.details-provenance {
+  margin-top: 20px;
+}
+
 .container-arts {
   display: flex;
   justify-content: center;
@@ -104,7 +113,7 @@ img.art-img {
   width: 20%;
   flex-direction: column;
   align-items: center;
-  padding: 0 40px;
+  margin: 0 40px;
   opacity: 0.4;
 }
 
@@ -235,19 +244,25 @@ button:focus-visible {
   .art-list-item {
     width: 33.3%;
   }
+  .arts-list.collapsed {
+    margin: 0 10px;
+  }
+  .arts-list.collapsed img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 @media only screen and (max-width: 767px) {
   .art-list-item {
     width: 50%;
   }
-}
-
-@media only screen and (max-width: 576px) {
   .arts-list.collapsed {
     display: none;
   }
+}
 
+@media only screen and (max-width: 576px) {
   .art-list-item {
     width: 100%;
   }
