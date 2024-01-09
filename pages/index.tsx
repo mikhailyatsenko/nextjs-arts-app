@@ -71,7 +71,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
       );
       detailArt = responseDetailArt.data?.data;
     }
-    // await Promise.all(store.dispatch(artsApi.util.getRunningQueriesThunk()));
 
     return { props: { ...artsData.data, limit, detailArt } };
   }

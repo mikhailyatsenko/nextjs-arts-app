@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 interface Props {
   arts: Arts[];
-  //   closeItemArtPage: () => void;
+  // closeItemArtPage: () => void;
 }
 
 const ListOfArts: React.FC<Props> = ({ arts }) => {

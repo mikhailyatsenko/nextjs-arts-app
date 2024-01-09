@@ -6,7 +6,7 @@ import { fireEvent } from '@testing-library/react';
 
 jest.mock('next/router', () => jest.requireActual('next-router-mock'));
 
-describe('Home', () => {
+describe('Search', () => {
   test('Search input has a text from router query', async () => {
     mockRouter.push('?search=test+search+query');
 

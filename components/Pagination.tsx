@@ -12,7 +12,7 @@ const Pagination: React.FC<Props> = ({ totalPages }) => {
   const maxPageLimitToDisplay =
     totalPages < 6 ? totalPages : currentPageNum + 6;
 
-  for (let i = currentPageNum; i < maxPageLimitToDisplay; i++) {
+  for (let i = currentPageNum; i <= maxPageLimitToDisplay; i++) {
     if (i > totalPages) {
       break;
     }
@@ -39,6 +39,7 @@ const Pagination: React.FC<Props> = ({ totalPages }) => {
             key={index}
             onClick={() => changePage(page)}
             className={page === currentPageNum ? 'active' : ''}
+            data-testid="pagination-number"
           >
             {page}
           </div>
